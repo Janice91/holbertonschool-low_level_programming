@@ -1,0 +1,13 @@
+#ifndef MAIN_H
+#define MAIN_H
+
+/**
+ * File: main.h
+ * Author: Janice91
+ * Description: En-tête contenant les prototypes des fonctions
+ * utilisées dans le projet functions_nested_loops.
+ */
+
+int _putchar(char c);
+
+#endif /* MAIN_H */
