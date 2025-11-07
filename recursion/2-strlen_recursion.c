@@ -1,18 +1,15 @@
 #include "main.h"
 
 /**
- * factorial - retourne la factorielle d'un nombre
- * @n: nombre à calculer
+ * _strlen_recursion - calcule la longueur d'une chaîne
+ * @s: chaîne à mesurer
  *
- * Return: factorielle de n, -1 si n < 0
+ * Return: longueur de la chaîne
  */
-int factorial(int n)
+int _strlen_recursion(char *s)
 {
-	if (n < 0)
-		return (-1);
+	if (*s == '\0')
+		return (0);
 
-	if (n == 0)
-		return (1);
-
-	return (n * factorial(n - 1));
+	return (1 + _strlen_recursion(s + 1));
 }
