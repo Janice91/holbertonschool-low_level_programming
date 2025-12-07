@@ -1,42 +1,51 @@
 #include "main.h"
-#include <fcntl.h>
-#include <unistd.h>
+#include <stdlib.h>
 
 /**
- * append_text_to_file - append text at the end of file
- * @filename: filename
- * @text_content: content
- * Return: 1 on success, -1 on failure
+ * read_textfile - reads a text file and prints it to POSIX stdout
+ * @filename: name of the file
+ * @letters: number of letters to read and print
+ *
+ * Return: number of letters printed, or 0 on failure
  */
-int append_text_to_file(const char *filename, char *text_content)
+ssize_t read_textfile(const char *filename, size_t letters)
 {
-    int fd;
-    int len;
-    int w;
+	int fd;
+	ssize_t r, w;
+	char *buffer;
 
-    if (!filename)
-        return (-1);
+	if (filename == NULL)
+		return (0);
 
-    fd = open(filename, O_WRONLY | O_APPEND);
-    if (fd == -1)
-        return (-1);
+	fd = open(filename, O_RDONLY);
+	if (fd == -1)
+		return (0);
 
-    if (!text_content)
-    {
-        close(fd);
-        return (1);
-    }
+	buffer = malloc(sizeof(char) * letters);
+	if (buffer == NULL)
+	{
+		close(fd);
+		return (0);
+	}
 
-    /* calculer la longueur du texte */
-    len = 0;
-    while (text_content[len])
-        len++;
+	r = read(fd, buffer, letters);
+	if (r == -1)
+	{
+		free(buffer);
+		close(fd);
+		return (0);
+	}
 
-    w = write(fd, text_content, len);
-    close(fd);
+	w = write(STDOUT_FILENO, buffer, r);
+	if (w == -1 || w != r)
+	{
+		free(buffer);
+		close(fd);
+		return (0);
+	}
 
-    if (w == -1 || w != len)
-        return (-1);
-
-    return (1);
+	free(buffer);
+	close(fd);
+	return (w);
 }
+
