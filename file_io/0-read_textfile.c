@@ -1,31 +1,42 @@
 #include "main.h"
+#include <fcntl.h>
+#include <unistd.h>
 
 /**
- * read_textfile - open read and print file content
- * @filename: file to read
- * @letters: number of letters to read
- * Return: number of printed chars
+ * append_text_to_file - append text at the end of file
+ * @filename: filename
+ * @text_content: content
+ * Return: 1 on success, -1 on failure
  */
-ssize_t read_textfile(const char *filename, size_t letters)
+int append_text_to_file(const char *filename, char *text_content)
 {
-	int fd, rd;
-	char *buffer;
+    int fd;
+    int len;
+    int w;
 
-	if (!filename)
-		return (0);
+    if (!filename)
+        return (-1);
 
-	buffer = malloc(sizeof(char) * letters + 1);
-	if (!buffer)
-		return (0);
+    fd = open(filename, O_WRONLY | O_APPEND);
+    if (fd == -1)
+        return (-1);
 
-	fd = open(filename, O_RDONLY);
-	if (fd == -1)
-	{
-	free(buffer);
-	return (0);
-	}
-	rd = read(fd, buffer, letters);
-	write(STDOUT_FILENO, buffer, rd);
-	close(fd);
-	return (rd);
+    if (!text_content)
+    {
+        close(fd);
+        return (1);
+    }
+
+    /* calculer la longueur du texte */
+    len = 0;
+    while (text_content[len])
+        len++;
+
+    w = write(fd, text_content, len);
+    close(fd);
+
+    if (w == -1 || w != len)
+        return (-1);
+
+    return (1);
 }
