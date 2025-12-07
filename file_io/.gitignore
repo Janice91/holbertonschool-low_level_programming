@@ -1,6 +1,20 @@
-# Ignore compiled binaries and test files
+# Ignore compiled C files
+*.o
+*.out
+
+# Ignore executables
+a.out
 c
 b
-hello
 readfile
+hello
+cp
+
+# Ignore backup files
+*~
+*.swp
+*.swo
+
+# Ignore other temporary/test files
+Requiescat
 
