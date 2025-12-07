@@ -1,0 +1,12 @@
+# Exécutables
+b
+c
+readfile
+cp
+
+# Fichiers temporaires / de test
+hello
+Requiescat
+Requiestcat
+*~
+*.o
